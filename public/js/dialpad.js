@@ -3,7 +3,7 @@ const end = document.getElementById("endButton");
 const queue = document.getElementById("queue");
 const notification = new Audio("notification.mp3")
 
-const websocket = new WebSocket("wss://nokenwa.ngrok.io");
+const websocket = new WebSocket(`wss://${window.location.hostname}`);
 
 websocket.onmessage = (event) => {
 	const data = JSON.parse(event.data);

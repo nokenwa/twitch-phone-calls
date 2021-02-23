@@ -1,11 +1,10 @@
-
-const websocket = new WebSocket("wss://nokenwa.ngrok.io");
+const websocket = new WebSocket(`wss://${window.location.hostname}`);
 const notification = new Audio("notification.mp3")
 const alert = document.getElementById('alert');
 
 document.addEventListener("DOMContentLoaded", async () => {
 	const response = await fetch(
-		"https://twitchcallcentre-5802-dev.twil.io/voice-token"
+		"TWILIO FUNCTION URL GOES HERE /generate-voice-token"
 	);
 	const data = await response.json();
 	const device = new Twilio.Device(data.token);
