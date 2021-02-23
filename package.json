@@ -1,0 +1,25 @@
+{
+  "name": "twitch-phone-calls",
+  "version": "1.0.0",
+  "description": "This shows you how to take phone calls on Twitch",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nokenwa/twitch-phone-calls.git"
+  },
+  "author": "Nathaniel Okenwa",
+  "license": "CC0-1.0",
+  "bugs": {
+    "url": "https://github.com/nokenwa/twitch-phone-calls/issues"
+  },
+  "homepage": "https://github.com/nokenwa/twitch-phone-calls#readme",
+  "dependencies": {
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "ws": "^7.4.3"
+  }
+}

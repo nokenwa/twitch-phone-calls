@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Twitch Call Centre</title>
+		<script
+			type="text/javascript"
+			src="https://media.twiliocdn.com/sdk/js/client/v1.7/twilio.min.js"
+		></script>
+		<link rel="stylesheet" href="css/styles.css" />
+	</head>
+	<body>
+		<div id="overlay">
+		<h1>Give Your Twilio Number a Call</h1>
+		</div>
+		<div id="alert">
+			<img id="phoneGif" src="/assets/ringing_phone.gif" >
+			<div id="callerInfo">
+				<h1>Incoming Call...</h1>
+				<h2 id="callerId"></h2>
+			</div>
+		</div>
+		<script type="text/javascript" src="js/index.js"></script>
+	</body>
+</html>
