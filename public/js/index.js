@@ -1,11 +1,9 @@
-const websocket = new WebSocket(`wss://${window.location.hostname}`);
-const notification = new Audio("notification.mp3")
+const websocket = new WebSocket(`ws://${window.location.host}`);
+const notification = new Audio("/assets/notification.mp3")
 const alert = document.getElementById('alert');
 
 document.addEventListener("DOMContentLoaded", async () => {
-	const response = await fetch(
-		"TWILIO FUNCTION URL GOES HERE /generate-voice-token"
-	);
+	const response = await fetch('/token',{method: 'POST'});
 	const data = await response.json();
 	const device = new Twilio.Device(data.token);
 
@@ -13,27 +11,43 @@ document.addEventListener("DOMContentLoaded", async () => {
 		console.log("Browser Phone Device Operational");
 	});
 
-	websocket.addEventListener("message", (event) => {
-		const data = JSON.parse(event.data);
-		switch (data.message) {
-			case "answer":
-				device.connect();
-				break;
-			case "end":
-				device.activeConnection().disconnect();
-				break;
-			case "queueMembers":
-				console.log("Queue Updateed")
-				if (data.payload.length > 0) {
-					notification.play();
-					alert.classList.add("visible");
-					const callerId = document.getElementById('callerId');
-					callerId.innerText = data.payload[0].username;
-				} else if (data.payload.length == 0) {
-					alert.classList.remove("visible")
-				}
-			default:
-				break;
-		}
+	device.on("incoming", (connection) => {
+		websocket.send(JSON.stringify({ message: 'incomingCall' }))
+
+		alert.classList.add('visible')
+		websocket.addEventListener("message", (event) => {
+			const data = JSON.parse(event.data);
+			switch (data.message) {
+				case "answer":
+					connection.accept();
+					break;
+				case "end":
+					connection.reject();
+					alert.classList.remove('visible');
+					break;
+				default:
+					break;
+			}
+		});
+	});
+
+	device.on("connect", (connection) => {
+		websocket.send(JSON.stringify({ message: 'incomingCall' }))
+	
+		websocket.addEventListener("message", (event) => {
+			const data = JSON.parse(event.data);
+			switch (data.message) {
+				case "end":
+					connection.disconnect();
+					alert.classlist.remove('visible')
+					break;
+				default:
+					break;
+			}
+		});
 	});
 });
+
+// UNCOMMENT IF YOU NEED TO PREVENT YOUR SERVER FROM SHUTTING DOWN DUE TO LACK OF REQUESTS
+// E.G. KEEPING HEROKU DYNO'S ALLIVE **BE CAREFUL, THIS COULD LEAD TO A BIGGER BILL**
+//stayalive = setInterval( ()=>{fetch('/stay-alive');} , 50000);
