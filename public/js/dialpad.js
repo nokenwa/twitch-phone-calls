@@ -1,7 +1,7 @@
 const answer = document.getElementById("answerButton");
 const end = document.getElementById("endButton");
 const queue = document.getElementById("queue");
-const notification = new Audio("notification.mp3")
+const notification = new Audio("assets/notification.mp3")
 
 const websocket = new WebSocket(`ws://${window.location.host}`);
 
