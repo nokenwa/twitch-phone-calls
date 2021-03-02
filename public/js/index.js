@@ -1,4 +1,6 @@
-const websocket = new WebSocket(`ws://${window.location.host}`);
+// use ws:// if you are testing using your localhost
+const websocket = new WebSocket(`wss://${window.location.host}`);
+
 const notification = new Audio("/assets/notification.mp3")
 const alert = document.getElementById('alert');
 
@@ -12,6 +14,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 	});
 
 	device.on("incoming", (connection) => {
+		console.log('incoming', connection);
 		websocket.send(JSON.stringify({ message: 'incomingCall' }))
 
 		alert.classList.add('visible')
@@ -23,6 +26,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 					break;
 				case "end":
 					connection.reject();
+					console.log('REJECT CALL');
 					alert.classList.remove('visible');
 					break;
 				default:
@@ -32,6 +36,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 	});
 
 	device.on("connect", (connection) => {
+		console.log('connect', connection);
 		websocket.send(JSON.stringify({ message: 'incomingCall' }))
 	
 		websocket.addEventListener("message", (event) => {
@@ -39,7 +44,8 @@ document.addEventListener("DOMContentLoaded", async () => {
 			switch (data.message) {
 				case "end":
 					connection.disconnect();
-					alert.classlist.remove('visible')
+					console.log('DISCONNECT CALL');
+					alert.classlist.remove('visible');
 					break;
 				default:
 					break;
