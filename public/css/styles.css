@@ -11,7 +11,7 @@ body {
 	border: solid 2px black;
 	background-color: white;
 	padding: 10px;
-	transition: bottom 500ms ease-in 500ms;
+	transition: bottom 500ms ease-in 1s;
 }
 
 #alert.visible {
