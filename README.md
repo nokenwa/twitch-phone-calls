@@ -8,38 +8,49 @@ Requirements:
 
 1. [Node](https://nodejs.org/en/download/) version 10.19.0 or later (check version in your terminal with `node -v`).
 1. A [Twilio account](https://www.twilio.com/try-twilio).
+1. A [Twilio Number](https://www.twilio.com/console/phone-numbers/search)
 1. A Twilio API Key & Secret [Create an API Key & Secret in the Console](https://www.twilio.com/console/project/api-keys).
-1. The Twilio CLI. [Install the CLI for your operating system](https://www.twilio.com/docs/twilio-cli/quickstart#install-twilio-cli) and login with your Flex account credentials using twilio login.
-1. The Twilio serverless plugin. Install from the command line with `twilio plugins:install @twilio-labs/plugin-serverless`. More details in the [docs](https://www.twilio.com/docs/labs/serverless-toolkit/getting-started).
+1. The Twilio CLI. [Install the CLI for your operating system](https://www.twilio.com/docs/twilio-cli/quickstart#install-twilio-cli) and login with your Twilio account credentials using twilio login.
+1. [NGROK](https://ngrok.com/) installed (For local testing)
 
 After cloning this repository, install dependencies with `npm`:
 ```
 npm install
 ```
 
-### Deploy verification serverless functions
-Copy the serverless config example and fill in the `ACCOUNT_SID`, `AUTH_TOKEN`,`API_KEY`, and `API_SECRET` :
-```
-cp serverless/.env.serverless.example serverless/.env
-```
-Deploy the functions with the Twilio CLI:
-```
-twilio serverless:deploy
-```
-Save the function URLs that display with the deployment details
+### Gather your Credentials
+Copy and rename the .env config example and fill in the `ACCOUNT_SID`,`API_KEY`, and `API_SECRET`
+cp serverless/.env.sample .env
 
-Copy the.env.example in the project root to .env:
-
+### Start the Project
 ```
-# in the project root
-cp .env.example .env
+npm start
 ```
-Update the TWILIO_FUNCTION_DOMAIN to be your new function url.
+### Use NGROK to tunnel your localhost for Twilio
 ```
-TWILIO_FUNCTION_DOMAIN="http://twitch-overlay-1234-dev.twil.io"
+ngrok http 3000
 ```
 
-### 
+### Update your Twilio Number to point to your ngrok url
+```
+twilio phone-numbers:update [YOUR_NUMBER_HERE] --voice-url  https://xxxxxxxx.ngrok.io/twilio
+```
+
+### Add Overlay to OBS
+Start OBS from Command Line with flag 'enable-media-stream'
+
+Windows cmd:
+```C:\Program Files\obs-studio\bin\64bit>obs64.exe --enable-media-stream```
+
+macOS terminal:
+```/Applications/OBS.app/Contents/MacOS/OBS --enable-media-stream```
+
+Create a new browser source and give it your ngrok url. Set the width and height to equal your streaming resolution.
+
+###
+Open a new browser window and navigate to your https://[[your-url]/dialpad
+
+Give your Twilio number a call. You should hear the phone ringing on OBS. Answer it from the control page and start talking!! 
 
 
 ## TO DO
